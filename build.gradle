@@ -13,9 +13,14 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
+    // Apache Commons libraries for the homework
     compile 'org.apache.commons:commons-collections4:4.4'
     compile 'org.apache.commons:commons-lang3:3.10'
     compile 'org.apache.commons:commons-math3:3.0'
+
+    // Google Guava library for additional classes
+    implementation("com.google.guava:guava:29.0-jre")
+
     compile "joda-time:joda-time:2.2"
     testCompile "junit:junit:4.12"
 }
