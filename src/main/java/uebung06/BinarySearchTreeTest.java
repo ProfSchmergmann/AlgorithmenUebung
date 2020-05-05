@@ -1,6 +1,6 @@
 package uebung06;
 
-public class Test {
+public class BinarySearchTreeTest {
 
     public static void main(String[] args) {
         BinarySearchTree tree = new BinarySearchTree();

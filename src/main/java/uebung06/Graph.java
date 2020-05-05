@@ -17,8 +17,7 @@ public class Graph {
     /**
      * Erzeugt leeren Graph mit den angegebenen Anzahl von Knoten
      *
-     * @param v
-     *            die Anzahl der Knoten
+     * @param v die Anzahl der Knoten
      */
     public Graph(int v) {
         adj = new ArrayList[v + 1];
@@ -32,10 +31,8 @@ public class Graph {
     /**
      * Erzeugt Graph mit v Knoten und e zufaelligen Kanten
      *
-     * @param v
-     *            die Anzahl der Knoten
-     * @param e
-     *            die Anzahl der zufaelligen Kanten
+     * @param v die Anzahl der Knoten
+     * @param e die Anzahl der zufaelligen Kanten
      */
     public Graph(int v, int e) {
         this(v);
@@ -53,9 +50,9 @@ public class Graph {
     }
 
     /**
-     * Erzeugt Graph aus der angegebenen Knotenliste
+     * Erzeugt Graph aus der angegebenen Kantenliste
      *
-     * @param list   die Knotenliste
+     * @param list die Kantenliste
      */
     public Graph(int[] list) {
         this(list[0]);
@@ -70,8 +67,7 @@ public class Graph {
      * Erzeugt Graph aus der Adjazanzliste aus dem angegebenen InputStream Die
      * Eintraege in einer Zeile muessen durch Whitespaces getrennt sein.
      *
-     * @param in
-     *            InputStream fuer die Adjazenzmatrix
+     * @param in InputStream fuer die Adjazenzmatrix
      */
     public Graph(InputStream in) {
         ArrayList<String> zeilen = new ArrayList<String>();
@@ -112,10 +108,8 @@ public class Graph {
     /**
      * Fuegt eine Kante hinzu
      *
-     * @param from
-     *            Ausgangspunkt der Kante
-     * @param to
-     *            Zielpunkt der Kante
+     * @param from Ausgangspunkt der Kante
+     * @param to   Zielpunkt der Kante
      */
     public void addEdge(int from, int to) {
         adj[from].add(to);
@@ -126,8 +120,7 @@ public class Graph {
      * Gibt eine Liste mit allen direkten Nachfolgern des angegebenen Knotens
      * zurueck
      *
-     * @param v
-     *            der Knoten
+     * @param v der Knoten
      * @return die Liste der direkten Nachfolger der Knotens
      */
     public ArrayList<Integer> getAdjacent(int v) {
@@ -144,30 +137,140 @@ public class Graph {
     }
 
     /**
+     * Gibt den Graphen als Kantenliste zurueck
+     *
+     * @return Graph als Kantenliste
+     */
+    public ArrayList<Integer> getEdgeList() {
+        ArrayList<Integer> integerArrayList = new ArrayList<>();
+        integerArrayList.add(vertexCount);
+        integerArrayList.add(edgeCount);
+        for (int i = 1; i < adj.length; i++) {
+            if (!adj[i].isEmpty()) {
+                for (int j : adj[i]) {
+                    integerArrayList.add(i);
+                    integerArrayList.add(j);
+                }
+            }
+        }
+        return integerArrayList;
+    }
+
+    /**
+     * Gibt den Graphen als Knotenliste zurueck
+     *
+     * @return Graph als Knotenliste
+     */
+    public ArrayList<Integer> getVertexList() {
+        ArrayList<Integer> integerArrayList = new ArrayList<>();
+        integerArrayList.add(vertexCount);
+        integerArrayList.add(edgeCount);
+        for (int i = 1; i < adj.length; i++) {
+            if (!adj[i].isEmpty()) {
+                integerArrayList.add(adj[i].size());
+                integerArrayList.addAll(adj[i]);
+            } else {
+                integerArrayList.add(0);
+                integerArrayList.add(0);
+                integerArrayList.add(0);
+            }
+        }
+        return integerArrayList;
+    }
+
+    /**
+     * Gibt den Graphen als Adjazenzmatrix zurueck.
+     *
+     * @return Graph als Adjazenzmatrix
+     */
+    public int[][] getAdjacencyMatrix() {
+        // Initialize temp array with zeros.
+        int[][] temp = new int[vertexCount][vertexCount];
+        for (int i = 1; i < adj.length; i++) {
+            if (!adj[i].isEmpty()) {
+                for (int j : adj[i]) {
+                    temp[i - 1][j - 1] = 1;
+                }
+            }
+        }
+        return temp;
+    }
+
+    /**
      * Durchläuft den Graphen mit Breitensuche und gibt die Elemente in der
      * durchlaufenen Reihenfolge zurueck.
      *
-     * @param start
-     *            Der Startknoten für die Breitensuche
+     * @param start Der Startknoten für die Breitensuche
      * @return Die Liste der durchlaufenen Knoten
      */
     public ArrayList<Integer> bfs(int start) {
-        boolean[] visited = new boolean[this.vertexCount];
+        boolean[] visited = new boolean[this.vertexCount + 1];
         ArrayDeque<Integer> queue = new ArrayDeque<>();
-        queue.addLast(start);
-        visited[start]=true;
-        /*Diese Funktion ist eine Hausaufgabe. Sie wird anschließend nachgereicht.
-         */
-        return null;
+        queue.add(start);
+        ArrayList<Integer> integerArrayList = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            int temp = queue.pollFirst();
+            if (!visited[temp]) {
+                queue.addAll(adj[temp]);
+                integerArrayList.add(temp);
+                visited[temp] = true;
+            }
+        }
+        return integerArrayList;
     }
 
-    public static void main(String[] args) {
-        int[] vlist = { 6, 10, 1, 5, 1, 4, 2, 3, 2, 6, 3, 4, 3, 5, 4, 5, 4, 6,
-                5, 6, 6, 4 };
-        Graph g = new Graph(vlist);
-        System.out.println(g);
-        g = new Graph(5, 20);
-        System.out.println(g);
-        g.bfs(1);
+    /**
+     * Durchlaeuft den Graphen mit Tiefensuche und gibt eine Liste der
+     * Knoten in durchlaufener Reihenfolge zurueck.
+     *
+     * @param start Startknoten
+     * @return Die Liste der durchlaufenen Knoten
+     */
+    public ArrayList<Integer> dfs(int start) {
+        boolean[] visited = new boolean[this.vertexCount + 1];
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        queue.add(start);
+        ArrayList<Integer> integerArrayList = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            int temp = queue.peek();
+            if (!visited[temp]) {
+                integerArrayList.add(temp);
+                if (!adj[temp].isEmpty()) {
+                    for (int i : adj[temp]) {
+                        if (!visited[i]) {
+                            queue.add(i);
+                            break;
+                        }
+                    }
+                }
+                visited[temp] = true;
+            } else {
+                queue.poll();
+            }
+        }
+        return integerArrayList;
     }
+
+    /**
+     * Gibt die Liste aller Knoten zurueck, die vom Knoten start aus
+     * nicht erreichbar sind.
+     * Benutzt dafuer die Breitensuche.
+     * @param start der Startknoten
+     * @return Die Liste der unereichbaren Knoten
+     */
+    public ArrayList<Integer> getUnreachableVertices(int start) {
+        ArrayList<Integer> bfs = this.bfs(start);
+        ArrayList<Integer> integerArrayList = new ArrayList<>();
+        boolean[] temp = new boolean[vertexCount + 1];
+        for (int i : bfs) {
+            temp[i] = true;
+        }
+        for (int i = 1; i < temp.length; i++) {
+            if (!temp[i]) {
+                integerArrayList.add(i);
+            }
+        }
+        return integerArrayList;
+    }
+
 }
