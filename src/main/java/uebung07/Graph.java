@@ -308,7 +308,7 @@ public class Graph {
         int[] temp = new int[vertexCount + 1];
         temp[0] = -2;
         for (int i = 1; i < temp.length; i++) {
-            temp[i] = this.getDistanceWithBfs(start, temp[i]);
+            temp[i] = this.getDistanceWithBfs(start, i);
         }
         temp[start] = 0;
         return temp;
@@ -338,6 +338,42 @@ public class Graph {
             }
         }
         return -1;
+    }
+
+    /**
+     * Versucht, den Graphen in zwei Farben einzufärben (1 und 2),
+     * wobei angrenzende Knoten nicht in derselben Farbe eingefärbt sein dürfen.
+     * Falls das nicht möglich ist (der Graph ist nicht bipartit),
+     * wird null zurückgegeben.
+     * Für die Kürze hat der Code eine beachtliche Schachtelungstiefe.
+     *
+     * @return int-Feld
+     */
+    public int[] getColours() {
+        int[] ret = new int[this.getVertexCount() + 1];
+        for (int k = 1; k < ret.length; k++) {                  //Schleife 1
+            if (ret[k] == 0) {
+                ret[k] = 1;
+                for (int i = 1; i < ret.length - 1; i++) {      //Schleife 2
+                    boolean changed = false;
+                    for (int j = 0; j < ret.length; j++) {      //Schleife 3
+                        if (ret[j] > 0) {
+                            int other = 3 - ret[j];
+                            for (int next : adj[j]) {           //Schleife 4
+                                if (ret[next] == 0) {
+                                    ret[next] = other;
+                                    changed = true;
+                                } else if (ret[next] != other) {
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+                    if (!changed) break;
+                }
+            }
+        }
+        return ret;
     }
 
 }
