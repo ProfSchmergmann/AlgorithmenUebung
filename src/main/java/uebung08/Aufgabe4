@@ -1,0 +1,33 @@
+a) Der Algorithmus durchläuft die Eingabe in einem Level-Order-Durchlauf,
+    bzw. führt eine Breitensuche durch.
+    Die verwendete Queue wird als LinkedList implementiert,
+    was darauf hindeutet, dass der Algorithmus keine Rekursion benutzt.
+    Die Queue wird immer mit dem Teilstring befüllt,
+    welcher auch gleichzeitig im Feld visit gespeichert wird.
+    Danach werden die Teilstrings in der Queue so lange durchsucht,
+    bis die Queue leer ist.
+    Jeder Teilstring wird auf Klammern überprüft
+    und falls die Klammern noch nicht besucht wurden,
+    werden diese als String zur Queue hinzugefügt.
+
+b) Wenn das Feld visit weggelassen werden würde,
+würde der Code schlimmstenfalls nicht terminieren,
+    da nicht gespeichert wurde, was schon überprüft wurde.
+
+c) Wenn die Variable weggelassen werden würde,
+    würden bei einem validen String auch alle Substrings nochmal geprüft werden,
+    obwohl das garnicht notwendig wäre.
+
+d) Das Problem könnte rekursiv mit Backtracking gelößt werden,
+    wenn der String immer in Teilstrings aufgeteilt werden würde,
+    die dann selbt wieder überprüft werden würden.
+    Das führt schon zu dem Problem,
+    dass die Aufteilung der Teilstrings sehr anspruchsvoll und schwierig wäre
+    und mit einer Queue das deutlich einfacher zu lösen ist.
+
+    Der hauptsächliche Nachteil einer rekursiven Lösung mit Backtracking ist der,
+    dass in Java beispielsweise keine Tail-Optimization stattfindet
+    und dadurch die rekursiven Aufrufe sehr viel Speicher und Rechenzeit einfordern.
+    Des Weiteren ist es gerade bei diesem Problem sehr schwierig,
+    eine sinnvolle Aufteilung zu finden,
+    mit der die rekursive Funktion erneut aufgerufen werden kann.
