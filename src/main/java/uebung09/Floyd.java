@@ -38,10 +38,10 @@ public class Floyd {
                 {0, 8, U, U}};
 
         // floyd(a);
-         floyd(a2a);
+        // floyd(a2a);
         // floyd(a2b);
         // floyd(a2c);
-        // floyd(a2d);
+        floyd(a2d);
 
 
     }
