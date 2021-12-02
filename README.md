@@ -1,3 +1,3 @@
 # AlgorithmenUebung
 
-Repository für die Übungen zu Algorithmen.
+Repository for storing the algorithm exercises.
